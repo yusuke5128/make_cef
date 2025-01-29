@@ -27,6 +27,7 @@ networkx==3.4.2
     # via make-cef
 numpy==2.2.2
     # via contourpy
+    # via make-cef
     # via matplotlib
     # via pandas
     # via scipy
