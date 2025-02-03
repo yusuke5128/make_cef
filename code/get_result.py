@@ -22,7 +22,7 @@ class GetOutPut:
 
     def main_compare_cef(self):
         vertex_num_list, dataset_list = self.get_numbers_from_previous_directory("previous_dataset")
-        vertex_num_list = ["020", "019", "018"] 
+        vertex_num_list = ["19"] 
         for vertex_num in vertex_num_list:
             print(vertex_num)
             for dataset in dataset_list:
@@ -310,6 +310,7 @@ class GetOutPut:
 if __name__ == "__main__":
     t_max_ratio = 0.3
     member_list = list(range(2, 5))
+    member_list = [2]
     probability = 0.8
     for member in member_list:
         out_put = GetOutPut(member, t_max_ratio, probability)

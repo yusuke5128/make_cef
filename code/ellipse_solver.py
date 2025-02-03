@@ -49,6 +49,7 @@ class SolverEllipseMethod:
             List[List[int]]: 最適解を導くパス
         """
         self.alpha = alpha
+        
         team_paths = self.create_initial_solution()
         print("初期解生成完了")
         print(f"{self.calculate_team_score(team_paths)=}")
@@ -105,6 +106,7 @@ class SolverEllipseMethod:
             List[List[int]]: ノードを削除した後の最適解のパスのリスト
         """
         for path_index, path in enumerate(team_paths):
+            remove_node_count = int(self.get_adjusted_path_length(path) / 4)
             path_ave = sum(self.scores_ave[node] for node in path)
             path_var = sum(self.scores_var[node] for node in path)
             path_score = self.calculate_obj_function(path_ave, path_var)
@@ -130,7 +132,12 @@ class SolverEllipseMethod:
             team_paths[path_index] = path
         return team_paths
         
-    
+    def get_adjusted_path_length(self, path):
+        if path and path[0] == self.start:
+            path = path[1:]  # 最初の要素を除く
+        if path and path[-1] == self.goal:
+            path = path[:-1]  # 最後の要素を除く
+        return len(path)
     
     def improvement(self, team_paths: List[List[int]], loop: str) -> List[List[int]]:
         """
@@ -191,13 +198,14 @@ class SolverEllipseMethod:
                 
             if not_change_outer_loop_count == 5:    # 外側ループで5回以上変化がなかった場合
                 break
-            
+            """
             if loop == "inner":
                 print("Reinitialize 1開始")
                 self.debug_main(team_paths)
                 self.reinitialization_one(k, team_paths)
                 print("Reinitialize 1完了")
                 self.debug_main(team_paths)
+            """
         return team_paths
     
     def reinitialization_one(self, k: int, team_paths: List[List[int]]) -> List[List[int]]:
