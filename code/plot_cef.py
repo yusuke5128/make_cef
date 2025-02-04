@@ -95,8 +95,83 @@ def plot_from_json_compare_cef_method(member: int, t_max_ratio: float, probabili
     print(f"Plots have been created and saved in {save_dir} as PNG files.")
 
 
+def plot_compare_team_score(member: int, t_max_ratio: float, probability: float) -> None:
+    # JSONファイルのパスを定義
+    json_file_path = 'graph_plot/compare/compare_cef_method.json'
+    
+    # JSONファイルからデータを読み込む
+    with open(json_file_path, "r") as file:
+        data = json.load(file)
+    
+    # 保存先ディレクトリが存在しない場合は作成
+    save_dir = "graph_plot/team_score"
+    os.makedirs(save_dir, exist_ok=True)
+    
+    # vertex_numとfile_idのリストを生成
+    vertex_num_list = [f"{i:03}" for i in range(8, 21)]
+    
+    # データをDataFrameに変換
+    df = pd.DataFrame(data)
+    
+    # 手法ごとの線スタイルを定義
+    line_styles = {
+        "DP CEF": '-',
+        "LS CEF(0.01)": '-.',
+        "LS CEF(0.1)": ':'
+    }
+    
+    # nameのマッピング
+    name_mapping = {
+        "CEF BY DP": "DP CEF",
+        "Proposed Ellipse CEF alpha hundred": "LS CEF(0.01)",
+        "Proposed Ellipse CEF alpha one": "LS CEF(0.1)"
+    }
+    
+    markers = {
+        "DP CEF": 'o',
+        "LS CEF(0.01)": 's',  # 四角形
+        "LS CEF(0.1)": 'D'  # 菱形
+    }
+    
+    # nameごとにデータをプロット
+    plt.figure(figsize=(8, 6))
+    for original_name, mapped_name in name_mapping.items():
+        avg_scores = []
+        vertex_num_list_int = []
+
+        for i, vertex_num in enumerate(vertex_num_list):
+            # 指定条件と一致するデータを抽出
+            filtered_df = df[
+                (df['member'] == member) &
+                (df['t_max_ratio'] == t_max_ratio) &
+                (df['probability'] == probability) &
+                (df['vertex_num'] == vertex_num) &
+                (df['name'] == original_name)
+            ]
+            
+            if not filtered_df.empty:
+                avg_scores.append(filtered_df['team_score'].mean())
+                vertex_num_list_int.append(8 + i)  # 対応するノード数を保持
+        
+        # プロット (None のデータ点がないリストを使用)
+        plt.plot(vertex_num_list_int, avg_scores, label=mapped_name, linestyle=line_styles[mapped_name], marker=markers[mapped_name])
+    
+    # グラフの設定
+    plt.xlabel("ノード数", fontsize=14)
+    plt.ylabel("チームスコアの平均", fontsize=14)
+    plt.legend(fontsize=12)
+    plt.grid(True)
+    
+    # グラフをファイルに保存
+    file_name = f"team_score_exact_heuri_{member}.png"
+    plt.savefig(os.path.join(save_dir, file_name))
+    plt.close()
+    
+    # プロセス完了メッセージを表示
+    print(f"Plot has been created and saved in {save_dir} as {file_name}.")
 
 
 
 if __name__ == '__main__':
+    plot_compare_team_score(2, 0.3, 0.8)
     plot_from_json_compare_cef_method(2, 0.3, 0.8)

@@ -118,7 +118,10 @@ class CEF_DP:
 
 
     def formula_alpha(self, m_1: float, v_1: float, m_2: float, v_2: float)   -> float:
-        alpha = (v_2 -v_1) / ((m_2 - m_1) + (v_2 - v_1))
+        if ((m_2 - m_1) + (v_2 - v_1)) != 0:
+            alpha = (v_2 -v_1) / ((m_2 - m_1) + (v_2 - v_1))
+        else:
+            alpha = 0
         return alpha
     
     def sol_by_scip_qa_alpha(self, alpha: float)   -> Tuple[int, int, List[List[int]]]:

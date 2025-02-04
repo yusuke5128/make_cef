@@ -22,7 +22,6 @@ class GetOutPut:
 
     def main_compare_cef(self):
         vertex_num_list, dataset_list = self.get_numbers_from_previous_directory("previous_dataset")
-        vertex_num_list = ["19"] 
         for vertex_num in vertex_num_list:
             print(vertex_num)
             for dataset in dataset_list:

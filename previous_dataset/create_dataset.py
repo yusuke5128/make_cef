@@ -187,10 +187,10 @@ def create_dataset_and_save() -> None:
             plt.close()
 
 if __name__ == "__main__":
-    dataset_count = 100  # ノードあたりのデータセット数
-    lower_node = 15
-    upper_node = 25
-    step = 1
+    dataset_count = 30  # ノードあたりのデータセット数
+    lower_node = 8
+    upper_node = 20
+    step = 2
     node_count_list = create_node_list(lower_node, upper_node, step)
     dataset_count_list = create_dataset_list(dataset_count)
     create_dataset_and_save()
