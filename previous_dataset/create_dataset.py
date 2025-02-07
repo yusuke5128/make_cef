@@ -188,9 +188,9 @@ def create_dataset_and_save() -> None:
 
 if __name__ == "__main__":
     dataset_count = 30  # ノードあたりのデータセット数
-    lower_node = 8
+    lower_node = 20
     upper_node = 20
-    step = 2
+    step = 1
     node_count_list = create_node_list(lower_node, upper_node, step)
     dataset_count_list = create_dataset_list(dataset_count)
     create_dataset_and_save()
